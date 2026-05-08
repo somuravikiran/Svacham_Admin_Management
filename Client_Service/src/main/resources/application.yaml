@@ -1,0 +1,35 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: CLIENT-SERVICE
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/svacham_client_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: root
+    password: W7301@jqir#
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+jwt:
+  secret: SvachamSecretKeyForJwtTokenGeneration123456789
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    com.svacham.clientservice: DEBUG

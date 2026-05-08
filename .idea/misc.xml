@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/Auth_Service/pom.xml" />
+        <option value="$PROJECT_DIR$/Client_Service/pom.xml" />
+        <option value="$PROJECT_DIR$/DashBoard_Service/pom.xml" />
+        <option value="$PROJECT_DIR$/GstBill_Service/pom.xml" />
+        <option value="$PROJECT_DIR$/Order_Service/pom.xml" />
+        <option value="$PROJECT_DIR$/Salary_Service/pom.xml" />
+        <option value="$PROJECT_DIR$/ServiceRegistry/pom.xml" />
+        <option value="$PROJECT_DIR$/Spending_Service/pom.xml" />
+        <option value="$PROJECT_DIR$/Stock_Service/pom.xml" />
+        <option value="$PROJECT_DIR$/API_Gateway/pom.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_26" project-jdk-name="ms-17" project-jdk-type="JavaSDK" />
+</project>

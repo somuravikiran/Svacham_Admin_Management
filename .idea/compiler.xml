@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="Order_Service (2)" />
+        <module name="Order_Service (3)" />
+        <module name="CLIENT-SERVICE" />
+        <module name="API_Gateway" />
+        <module name="Order_Service (1)" />
+      </profile>
+      <profile name="Annotation profile for Stock_Service" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.38/lombok-1.18.38.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.38/lombok-1.18.38.jar" />
+        </processorPath>
+        <module name="Stock_Service" />
+      </profile>
+      <profile name="Annotation profile for Order_Service" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.28/lombok-1.18.28.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.28/lombok-1.18.28.jar" />
+        </processorPath>
+        <module name="Order_Service" />
+      </profile>
+      <profile name="Annotation profile for GstBill_Service" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.34/lombok-1.18.34.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.34/lombok-1.18.34.jar" />
+        </processorPath>
+        <module name="GstBill_Service" />
+        <module name="Client_Service" />
+      </profile>
+      <profile name="Annotation profile for Auth_Service" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.34/lombok-1.18.34.jar" />
+        </processorPath>
+        <module name="Auth_Service" />
+      </profile>
+    </annotationProcessing>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="API_Gateway" options="-parameters" />
+      <module name="Auth_Service" options="-parameters" />
+      <module name="CLIENT-SERVICE" options="-parameters" />
+      <module name="Client_Service" options="-parameters" />
+      <module name="GstBill_Service" options="-parameters" />
+      <module name="Order_Service" options="-parameters" />
+      <module name="Order_Service (1)" options="-parameters" />
+      <module name="Order_Service (2)" options="-parameters" />
+      <module name="Order_Service (3)" options="-parameters" />
+      <module name="Stock_Service" options="-parameters" />
+    </option>
+  </component>
+</project>
