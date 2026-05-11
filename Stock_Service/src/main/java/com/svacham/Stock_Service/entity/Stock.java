@@ -1,13 +1,13 @@
 package com.svacham.Stock_Service.entity;
 
-import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "stock")
+@Document(collection = "stock")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -16,16 +16,15 @@ import java.time.LocalDateTime;
 public class Stock {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
-    private String itemName;            // Mango Pickle / Garlic / Oil / Jar
+    private String itemName;
 
     private Integer quantity;
 
-    private String itemCategory;      // FINISHED_PICKLE / RAW_MATERIAL / PACKING
+    private String itemCategory;
 
-    private String stockUnit;         // KG / LITRE / PIECE / JAR
+    private String stockUnit;
 
     private Double totalStock;
 
@@ -43,7 +42,7 @@ public class Stock {
 
     private LocalDate stockAddedDate;
 
-    private String status;            // AVAILABLE / LOW_STOCK / OUT_OF_STOCK
+    private String status;
 
     private String notes;
 

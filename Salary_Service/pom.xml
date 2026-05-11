@@ -16,7 +16,7 @@
 	<groupId>com.svacham</groupId>
 	<artifactId>Salary_Service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Order_Service</name>
+	<name>Salary_Service</name>
 
 	<properties>
 		<java.version>17</java.version>
@@ -36,24 +36,18 @@
 			<artifactId>spring-boot-starter-webflux</artifactId>
 		</dependency>
 
-		<!-- JPA -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
-
 		<!-- VALIDATION -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
 
-		<!-- MYSQL -->
+
 		<dependency>
-			<groupId>com.mysql</groupId>
-			<artifactId>mysql-connector-j</artifactId>
-			<scope>runtime</scope>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-mongodb</artifactId>
 		</dependency>
+
 
 		<!-- EUREKA -->
 		<dependency>

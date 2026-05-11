@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
-import static io.netty.handler.codec.http.HttpHeaderValidationUtil.validateToken;
+// use service-based token validation instead of a static netty utility
 
 @RestController
 @RequestMapping("/api/gst-bills")
@@ -18,7 +18,7 @@ public class GstBillController {
 
     @PostMapping("/create")
     public ResponseEntity<?> createBill(@RequestHeader("Authorization") String token,@RequestBody GstBill gstBill) {
-        validateToken(token);
+        gstBillService.validateToken(token);
         return ResponseEntity.ok(Map.of(
                 "message", "GST Bill created successfully",
                 "data", gstBillService.createBill(gstBill)
@@ -26,8 +26,8 @@ public class GstBillController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<?> updateBill(@RequestHeader("Authorization") String token,@PathVariable Long id, @RequestBody GstBill gstBill) {
-        validateToken(token);
+    public ResponseEntity<?> updateBill(@RequestHeader("Authorization") String token,@PathVariable String id, @RequestBody GstBill gstBill) {
+        gstBillService.validateToken(token);
         return ResponseEntity.ok(Map.of(
                 "message", "GST Bill updated successfully",
                 "data", gstBillService.updateBill(id, gstBill)
@@ -35,8 +35,8 @@ public class GstBillController {
     }
 
     @GetMapping("/get/{id}")
-    public ResponseEntity<?> getBillById(@RequestHeader("Authorization") String token,@PathVariable Long id) {
-        validateToken(token);
+    public ResponseEntity<?> getBillById(@RequestHeader("Authorization") String token,@PathVariable String id) {
+        gstBillService.validateToken(token);
         return ResponseEntity.ok(Map.of(
                 "message", "GST Bill fetched successfully",
                 "data", gstBillService.getBillById(id)
@@ -45,7 +45,7 @@ public class GstBillController {
 
     @GetMapping("/getAll")
     public ResponseEntity<?> getAllBills(@RequestHeader("Authorization") String token) {
-        validateToken(token);
+        gstBillService.validateToken(token);
         return ResponseEntity.ok(Map.of(
                 "message", "All GST Bills fetched successfully",
                 "data", gstBillService.getAllBills()
@@ -53,8 +53,8 @@ public class GstBillController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteBill(@RequestHeader("Authorization") String token,@PathVariable Long id) {
-        validateToken(token);
+    public ResponseEntity<?> deleteBill(@RequestHeader("Authorization") String token,@PathVariable String id) {
+        gstBillService.validateToken(token);
         gstBillService.deleteBill(id);
         return ResponseEntity.ok(Map.of(
                 "message", "GST Bill deleted successfully"
@@ -63,7 +63,7 @@ public class GstBillController {
 
     @GetMapping("/summary")
     public ResponseEntity<?> getSummary(@RequestHeader("Authorization") String token) {
-        validateToken(token);
+        gstBillService.validateToken(token);
         return ResponseEntity.ok(Map.of(
                 "message", "GST Summary fetched successfully",
                 "data", gstBillService.getSummary()

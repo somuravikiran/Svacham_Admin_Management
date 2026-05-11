@@ -30,14 +30,14 @@ public class OrderController {
     }
 
     @GetMapping("/{id}")
-    public Order getOrderById(@RequestHeader("Authorization") String token,@PathVariable Long id){
+    public Order getOrderById(@RequestHeader("Authorization") String token,@PathVariable String id){
         orderService.validateToken(token);
 //        validateToken(token);
         return orderService.getOrderById(id);
     }
 
     @DeleteMapping("/delete/{id}")
-    public String deleteOrder(@RequestHeader("Authorization") String token,@PathVariable Long id){
+    public String deleteOrder(@RequestHeader("Authorization") String token,@PathVariable String id){
         orderService.validateToken(token);
 //        validateToken(token);
         orderService.deleteOrder(id);

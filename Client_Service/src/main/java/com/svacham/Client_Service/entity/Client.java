@@ -1,13 +1,13 @@
 package com.svacham.Client_Service.entity;
 
 
-import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
 
-@Entity
-@Table(name = "clients")
+@Document(collection="clients")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -16,8 +16,7 @@ import java.time.LocalDate;
 public class Client {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     private String clientName;
     private String phoneNumber;

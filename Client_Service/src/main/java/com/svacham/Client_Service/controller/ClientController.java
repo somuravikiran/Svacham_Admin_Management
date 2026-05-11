@@ -62,7 +62,7 @@ public class ClientController {
 
     @GetMapping("/{id}")
     public Client getClientById(@RequestHeader("Authorization") String token,
-                                @PathVariable Long id) {
+                                @PathVariable String id) {
         clientService.validateToken(token);
 //        validateToken(token);
         return clientService.getClientById(id);
@@ -70,7 +70,7 @@ public class ClientController {
 
     @PutMapping("/update/{id}")
     public Client updateClient(@RequestHeader("Authorization") String token,
-                               @PathVariable Long id,
+                               @PathVariable String id,
                                @RequestBody Client client) {
         clientService.validateToken(token);
 //        validateToken(token);
@@ -79,7 +79,7 @@ public class ClientController {
 
     @DeleteMapping("/delete/{id}")
     public String deleteClient(@RequestHeader("Authorization") String token,
-                               @PathVariable Long id) {
+                               @PathVariable String id) {
         clientService.validateToken(token);
 //        validateToken(token);
         clientService.deleteClient(id);

@@ -42,7 +42,7 @@ class GstBillServiceImplTest {
 
     @Test
     void updateBill_existing_updatesAndSaves() {
-        Long id = 1L;
+        String id = "1";
         GstBill existing = new GstBill();
         existing.setVendorName("Old Vendor");
         existing.setBillAmount(500.0);
@@ -71,18 +71,18 @@ class GstBillServiceImplTest {
     void getBillById_found_returnsBill() {
         GstBill bill = new GstBill();
         bill.setBillNumber("B-100");
-        when(gstBillRepository.findById(2L)).thenReturn(Optional.of(bill));
+        when(gstBillRepository.findById("2")).thenReturn(Optional.of(bill));
 
-        GstBill res = gstBillService.getBillById(2L);
+        GstBill res = gstBillService.getBillById("2");
 
         assertEquals("B-100", res.getBillNumber());
     }
 
     @Test
     void getBillById_notFound_throws() {
-        when(gstBillRepository.findById(99L)).thenReturn(Optional.empty());
+        when(gstBillRepository.findById("99")).thenReturn(Optional.empty());
 
-        RuntimeException ex = assertThrows(RuntimeException.class, () -> gstBillService.getBillById(99L));
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> gstBillService.getBillById("99"));
         assertTrue(ex.getMessage().contains("GST Bill not found"));
     }
 
@@ -99,11 +99,11 @@ class GstBillServiceImplTest {
 
     @Test
     void deleteBill_callsRepository() {
-        doNothing().when(gstBillRepository).deleteById(5L);
+        doNothing().when(gstBillRepository).deleteById("5");
 
-        gstBillService.deleteBill(5L);
+        gstBillService.deleteBill("5");
 
-        verify(gstBillRepository, times(1)).deleteById(5L);
+        verify(gstBillRepository, times(1)).deleteById("5");
     }
 
     @Test

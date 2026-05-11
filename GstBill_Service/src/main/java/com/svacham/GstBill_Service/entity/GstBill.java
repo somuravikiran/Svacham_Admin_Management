@@ -1,12 +1,13 @@
 package com.svacham.GstBill_Service.entity;
-import jakarta.persistence.*;
+
 import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "gst_bills")
+@Document(collection="gst-bill")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -15,8 +16,7 @@ import java.time.LocalDateTime;
 public class GstBill {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     private String vendorName;
 

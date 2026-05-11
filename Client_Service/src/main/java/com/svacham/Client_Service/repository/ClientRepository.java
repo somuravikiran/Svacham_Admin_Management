@@ -1,12 +1,11 @@
 package com.svacham.Client_Service.repository;
-import com.svacham.Client_Service.dto.ClientSummaryDto;
+
 import com.svacham.Client_Service.entity.Client;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;
 
-public interface ClientRepository extends JpaRepository<Client, Long> {
+public interface ClientRepository extends MongoRepository<Client, String> {
 
     List<Client> findByCity(String city);
 

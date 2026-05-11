@@ -18,6 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
 
+
     private final OrderRepository orderRepository;
 
     private final WebClient.Builder webClientBuilder;
@@ -25,11 +26,13 @@ public class OrderServiceImpl implements OrderService {
     private final ClientServiceFeign clientServiceFeign;
 
     private final StockClientService stockClientService;
-    public AuthValidationResponseDto validateToken(String token) {
-        try {
-//            System.out.println("STEP 3 : CALLING AUTH-SERVICE");
 
-            AuthValidationResponseDto response = webClientBuilder.build()
+    @Override
+    public AuthValidationResponseDto validateToken(String token) {
+
+        try {
+
+            return webClientBuilder.build()
                     .get()
                     .uri("http://AUTH-SERVICE/auth/validate")
                     .header("Authorization", token)
@@ -37,8 +40,6 @@ public class OrderServiceImpl implements OrderService {
                     .bodyToMono(AuthValidationResponseDto.class)
                     .block();
 
-//            System.out.println("STEP 4 : AUTH RESPONSE = " + response);
-            return response;
         } catch (Exception e) {
             throw new RuntimeException("AUTH-SERVICE is unavailable : " + e.getMessage());
         }
@@ -47,7 +48,6 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order createOrder(String token, OrderRequestDto requestDto) {
 
-        // STEP 1: CLIENT VALIDATION (your existing logic stays same)
         ClientResponseDto client;
 
         try {
@@ -57,6 +57,7 @@ public class OrderServiceImpl implements OrderService {
         }
 
         Order order = new Order();
+
         order.setClientId(client.getId());
         order.setClientName(client.getClientName());
         order.setOrderDate(requestDto.getOrderDate());
@@ -64,32 +65,35 @@ public class OrderServiceImpl implements OrderService {
         order.setPaidAmount(requestDto.getPaidAmount());
 
         List<OrderItem> orderItems = new ArrayList<>();
+
         double totalAmount = 0.0;
 
         for (OrderItemDto itemDto : requestDto.getItems()) {
 
-            // STEP 2: STOCK CHECK
             Boolean available = stockClientService.checkStock(itemDto.getPickleType());
 
             if (!available) {
-                throw new RuntimeException("Stock not available for: " + itemDto.getPickleType());
+                throw new RuntimeException(
+                        "Stock not available for: " + itemDto.getPickleType()
+                );
             }
 
             OrderItem item = new OrderItem();
+
             item.setPickleType(itemDto.getPickleType());
             item.setPackSizeKg(itemDto.getPackSizeKg());
             item.setQuantity(itemDto.getQuantity());
             item.setUnitPrice(itemDto.getUnitPrice());
 
-            double subTotal = itemDto.getQuantity() * itemDto.getUnitPrice();
+            double subTotal =
+                    itemDto.getQuantity() * itemDto.getUnitPrice();
+
             item.setSubTotal(subTotal);
 
-            item.setOrder(order);
-
             orderItems.add(item);
+
             totalAmount += subTotal;
 
-            // STEP 3: REDUCE STOCK
             stockClientService.reduceStock(
                     itemDto.getPickleType(),
                     itemDto.getQuantity()
@@ -97,13 +101,16 @@ public class OrderServiceImpl implements OrderService {
         }
 
         order.setItems(orderItems);
+
         order.setTotalAmount(totalAmount);
 
         if (order.getPaidAmount() == null) {
             order.setPaidAmount(0.0);
         }
 
-        order.setPendingAmount(totalAmount - order.getPaidAmount());
+        order.setPendingAmount(
+                totalAmount - order.getPaidAmount()
+        );
 
         if (order.getPendingAmount() <= 0) {
             order.setOrderStatus("PAID");
@@ -115,35 +122,49 @@ public class OrderServiceImpl implements OrderService {
 
         return orderRepository.save(order);
     }
+
     @Override
     public Order createOrder(Order order) {
-        // ensure items reference back to order and compute totals
+
+        double total = 0.0;
+
         if (order.getItems() != null) {
-            double total = 0.0;
+
             for (OrderItem item : order.getItems()) {
+
                 if (item.getSubTotal() == null) {
-                    double qty = item.getQuantity() != null ? item.getQuantity() : 0;
-                    double price = item.getUnitPrice() != null ? item.getUnitPrice() : 0;
+
+                    double qty =
+                            item.getQuantity() != null
+                                    ? item.getQuantity()
+                                    : 0;
+
+                    double price =
+                            item.getUnitPrice() != null
+                                    ? item.getUnitPrice()
+                                    : 0;
+
                     item.setSubTotal(qty * price);
                 }
+
                 total += item.getSubTotal();
-                item.setOrder(order);
-            }
-            order.setTotalAmount(total);
-        } else {
-            if (order.getTotalAmount() == null) {
-                order.setTotalAmount(0.0);
             }
         }
+
+        order.setTotalAmount(total);
 
         if (order.getPaidAmount() == null) {
             order.setPaidAmount(0.0);
         }
 
-        order.setPendingAmount(order.getTotalAmount() - order.getPaidAmount());
+        order.setPendingAmount(
+                order.getTotalAmount() - order.getPaidAmount()
+        );
 
-        if (order.getPendingAmount() == 0) {
+        if (order.getPendingAmount() <= 0) {
             order.setOrderStatus("PAID");
+        } else if (order.getPaidAmount() > 0) {
+            order.setOrderStatus("PARTIAL");
         } else {
             order.setOrderStatus("PENDING");
         }
@@ -152,8 +173,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order updateOrder(Long id, Order order) {
-        Order existing = orderRepository.findById(id).orElseThrow(() -> new RuntimeException("Order not found"));
+    public Order updateOrder(String id, Order order) {
+
+        Order existing = orderRepository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Order not found"));
 
         existing.setClientId(order.getClientId());
         existing.setClientName(order.getClientName());
@@ -161,30 +185,47 @@ public class OrderServiceImpl implements OrderService {
         existing.setDeliveryDate(order.getDeliveryDate());
         existing.setPaidAmount(order.getPaidAmount());
 
+        double total = 0.0;
+
         if (order.getItems() != null) {
-            // set parent reference and recalculate totals
-            double total = 0.0;
+
             for (OrderItem item : order.getItems()) {
+
                 if (item.getSubTotal() == null) {
-                    double qty = item.getQuantity() != null ? item.getQuantity() : 0;
-                    double price = item.getUnitPrice() != null ? item.getUnitPrice() : 0;
+
+                    double qty =
+                            item.getQuantity() != null
+                                    ? item.getQuantity()
+                                    : 0;
+
+                    double price =
+                            item.getUnitPrice() != null
+                                    ? item.getUnitPrice()
+                                    : 0;
+
                     item.setSubTotal(qty * price);
                 }
+
                 total += item.getSubTotal();
-                item.setOrder(existing);
             }
+
             existing.setItems(order.getItems());
-            existing.setTotalAmount(total);
         }
+
+        existing.setTotalAmount(total);
 
         if (existing.getPaidAmount() == null) {
             existing.setPaidAmount(0.0);
         }
 
-        existing.setPendingAmount(existing.getTotalAmount() - existing.getPaidAmount());
+        existing.setPendingAmount(
+                existing.getTotalAmount() - existing.getPaidAmount()
+        );
 
-        if (existing.getPendingAmount() == 0) {
+        if (existing.getPendingAmount() <= 0) {
             existing.setOrderStatus("PAID");
+        } else if (existing.getPaidAmount() > 0) {
+            existing.setOrderStatus("PARTIAL");
         } else {
             existing.setOrderStatus("PENDING");
         }
@@ -198,12 +239,14 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order getOrderById(Long id) {
-        return orderRepository.findById(id).orElseThrow(() -> new RuntimeException("Order not found"));
+    public Order getOrderById(String id) {
+        return orderRepository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Order not found"));
     }
 
     @Override
-    public void deleteOrder(Long id) {
+    public void deleteOrder(String id) {
         orderRepository.deleteById(id);
     }
 
@@ -212,10 +255,20 @@ public class OrderServiceImpl implements OrderService {
 
         List<Order> orders = orderRepository.findAll();
 
-        double totalRevenue = orders.stream().mapToDouble(Order::getTotalAmount).sum();
-        double totalPending = orders.stream().mapToDouble(Order::getPendingAmount).sum();
+        double totalRevenue = orders.stream()
+                .mapToDouble(Order::getTotalAmount)
+                .sum();
+
+        double totalPending = orders.stream()
+                .mapToDouble(Order::getPendingAmount)
+                .sum();
+
         long totalOrders = orders.size();
 
-        return new StateOrderSummaryDto(totalRevenue,totalPending,totalOrders);
+        return new StateOrderSummaryDto(
+                totalRevenue,
+                totalPending,
+                totalOrders
+        );
     }
 }

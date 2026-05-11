@@ -14,11 +14,11 @@ public interface ClientService {
 
     List<Client> getAllClients();
 
-    Client getClientById(Long id);
+    Client getClientById(String id);
 
-    Client updateClient(Long id, Client client);
+    Client updateClient(String id, Client client);
 
-    void deleteClient(Long id);
+    void deleteClient(String id);
 
     Double getTotalBalanceAmount();
 

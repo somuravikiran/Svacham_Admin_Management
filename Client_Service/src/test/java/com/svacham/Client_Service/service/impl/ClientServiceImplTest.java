@@ -49,9 +49,9 @@ class ClientServiceImplTest {
 
     @Test
     void getClientById_found_returnsClient() {
-        when(clientRepository.findById(1L)).thenReturn(Optional.of(sampleClient));
+        when(clientRepository.findById("1")).thenReturn(Optional.of(sampleClient));
 
-        Client c = clientService.getClientById(1L);
+        Client c = clientService.getClientById("1");
 
         assertNotNull(c);
         assertEquals("Test Client", c.getClientName());
@@ -59,9 +59,9 @@ class ClientServiceImplTest {
 
     @Test
     void getClientById_notFound_throwsRuntimeException() {
-        when(clientRepository.findById(2L)).thenReturn(Optional.empty());
+        when(clientRepository.findById("2")).thenReturn(Optional.empty());
 
-        RuntimeException ex = assertThrows(RuntimeException.class, () -> clientService.getClientById(2L));
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> clientService.getClientById("2"));
         assertEquals("Client Not Found", ex.getMessage());
     }
 
@@ -81,10 +81,10 @@ class ClientServiceImplTest {
         update.setTotalAmount(2000.0);
         update.setAmountPaid(500.0);
 
-        when(clientRepository.findById(5L)).thenReturn(Optional.of(existing));
+        when(clientRepository.findById("5")).thenReturn(Optional.of(existing));
         when(clientRepository.save(any(Client.class))).thenAnswer(i -> i.getArgument(0));
 
-        Client result = clientService.updateClient(5L, update);
+        Client result = clientService.updateClient("5", update);
 
         assertEquals("New Name", result.getClientName());
         assertEquals(1500.0, result.getBalanceAmount());
@@ -94,11 +94,11 @@ class ClientServiceImplTest {
 
     @Test
     void deleteClient_callsRepository() {
-        doNothing().when(clientRepository).deleteById(10L);
+        doNothing().when(clientRepository).deleteById("10");
 
-        clientService.deleteClient(10L);
+        clientService.deleteClient("10");
 
-        verify(clientRepository, times(1)).deleteById(10L);
+        verify(clientRepository, times(1)).deleteById("10");
     }
 
     @Test

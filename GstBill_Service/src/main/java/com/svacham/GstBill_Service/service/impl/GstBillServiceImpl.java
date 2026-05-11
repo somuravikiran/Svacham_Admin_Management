@@ -43,7 +43,7 @@ public class GstBillServiceImpl implements GstBillService {
     }
 
     @Override
-    public GstBill updateBill(Long id, GstBill gstBill) {
+    public GstBill updateBill(String id, GstBill gstBill) {
         GstBill existing = gstBillRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("GST Bill not found with id : " + id));
 
@@ -63,7 +63,7 @@ public class GstBillServiceImpl implements GstBillService {
     }
 
     @Override
-    public GstBill getBillById(Long id) {
+    public GstBill getBillById(String id) {
         return gstBillRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("GST Bill not found with id : " + id));
     }
@@ -74,7 +74,7 @@ public class GstBillServiceImpl implements GstBillService {
     }
 
     @Override
-    public void deleteBill(Long id) {
+    public void deleteBill(String id) {
         gstBillRepository.deleteById(id);
     }
 

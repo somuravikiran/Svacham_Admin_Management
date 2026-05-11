@@ -31,20 +31,19 @@ class OrderServiceImplTest {
 
     @Test
     void createOrder_fromRequest_calculatesTotalsAndSaves() {
-        OrderItemDto item1 = new OrderItemDto();
-        item1.setPickleType("Mango");
-        item1.setPackSizeKg(1.0);
+        // adapt test to call createOrder(Order) since service expects entity
+        OrderItem item1 = new OrderItem();
         item1.setQuantity(2);
         item1.setUnitPrice(100.0);
 
-        OrderRequestDto req = new OrderRequestDto();
-        req.setClientId(1L);
-        req.setClientName("Client A");
-        req.setItems(List.of(item1));
+        Order order = new Order();
+        order.setClientId("1");
+        order.setClientName("Client A");
+        order.setItems(List.of(item1));
 
         when(orderRepository.save(any(Order.class))).thenAnswer(i -> i.getArgument(0));
 
-        Order saved = orderService.createOrder(req);
+        Order saved = orderService.createOrder(order);
 
         assertNotNull(saved);
         assertEquals(200.0, saved.getTotalAmount());
@@ -82,7 +81,7 @@ class OrderServiceImplTest {
         existing.setPaidAmount(100.0);
         existing.setPendingAmount(0.0);
 
-        when(orderRepository.findById(1L)).thenReturn(Optional.of(existing));
+        when(orderRepository.findById("1")).thenReturn(Optional.of(existing));
         when(orderRepository.save(any(Order.class))).thenAnswer(i -> i.getArgument(0));
 
         Order update = new Order();
@@ -92,7 +91,7 @@ class OrderServiceImplTest {
         item.setUnitPrice(60.0);
         update.setItems(new ArrayList<>(List.of(item)));
 
-        Order res = orderService.updateOrder(1L, update);
+        Order res = orderService.updateOrder("1", update);
 
         assertEquals(120.0, res.getTotalAmount());
         assertEquals(50.0, res.getPaidAmount());
@@ -117,19 +116,19 @@ class OrderServiceImplTest {
 
     @Test
     void getOrderById_notFound_throws() {
-        when(orderRepository.findById(99L)).thenReturn(Optional.empty());
+        when(orderRepository.findById("99")).thenReturn(Optional.empty());
 
-        RuntimeException ex = assertThrows(RuntimeException.class, () -> orderService.getOrderById(99L));
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> orderService.getOrderById("99"));
         assertEquals("Order not found", ex.getMessage());
     }
 
     @Test
     void deleteOrder_callsRepository() {
-        doNothing().when(orderRepository).deleteById(5L);
+        doNothing().when(orderRepository).deleteById("5");
 
-        orderService.deleteOrder(5L);
+        orderService.deleteOrder("5");
 
-        verify(orderRepository, times(1)).deleteById(5L);
+        verify(orderRepository, times(1)).deleteById("5");
     }
 }
 

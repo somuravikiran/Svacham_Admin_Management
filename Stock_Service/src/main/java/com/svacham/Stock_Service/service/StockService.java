@@ -10,18 +10,20 @@ import java.util.List;
 public interface StockService {
 
     Boolean checkStock(String itemName);
+
     String reduceStock(String itemName, Integer qty);
+
     AuthValidationResponseDto validateToken(String token);
 
     Stock addStock(Stock stock);
 
-    Stock updateStock(Long id, Stock stock);
+    Stock updateStock(String id, Stock stock);
 
     List<Stock> getAllStock();
 
-    Stock getStockById(Long id);
+    Stock getStockById(String id);
 
-    void deleteStock(Long id);
+    void deleteStock(String id);
 
     StockSummaryDto getStockSummary();
 

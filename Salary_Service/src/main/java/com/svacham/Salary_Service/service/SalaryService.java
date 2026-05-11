@@ -15,11 +15,11 @@ public interface SalaryService {
 
     List<Salary> getAllSalaries();
 
-    Salary getSalaryById(Long id);
+    Salary getSalaryById(String id);
 
-    Salary updateSalary(Long id, Salary salary);
+    Salary updateSalary(String id, Salary salary);
 
-    void deleteSalary(Long id);
+    void deleteSalary(String id);
 
     List<Salary> getByStatus(String status);
 

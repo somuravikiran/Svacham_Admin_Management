@@ -1,14 +1,14 @@
 package com.svacham.Spending_Service.entity;
 
 
-import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "spending")
+@Document(collection = "spending")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -17,8 +17,7 @@ import java.time.LocalDateTime;
 public class Spending {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     private String expenseTitle;
 
@@ -34,7 +33,7 @@ public class Spending {
 
     private String paymentMode;
 
-    private String status;   // PAID / PENDING / CANCELLED
+    private String status;
 
     private LocalDateTime createdAt;
 }

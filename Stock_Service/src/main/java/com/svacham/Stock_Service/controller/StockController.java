@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static io.netty.handler.codec.http.HttpHeaderValidationUtil.validateToken;
-
 @RestController
 @RequestMapping("/api/stock")
 @RequiredArgsConstructor
@@ -24,7 +22,7 @@ public class StockController {
     }
 
     @PutMapping("/update/{id}")
-    public Stock updateStock(@RequestHeader("Authorization") String token,@PathVariable Long id, @RequestBody Stock stock) {
+    public Stock updateStock(@RequestHeader("Authorization") String token,@PathVariable String id, @RequestBody Stock stock) {
         stockService.validateToken(token);
 //        validateToken(token);
         return stockService.updateStock(id, stock);
@@ -38,14 +36,14 @@ public class StockController {
     }
 
     @GetMapping("/{id}")
-    public Stock getStockById(@RequestHeader("Authorization") String token,@PathVariable Long id) {
+    public Stock getStockById(@RequestHeader("Authorization") String token,@PathVariable String id) {
         stockService.validateToken(token);
 //        validateToken(token);
         return stockService.getStockById(id);
     }
 
     @DeleteMapping("/delete/{id}")
-    public String deleteStock(@RequestHeader("Authorization") String token,@PathVariable Long id) {
+    public String deleteStock(@RequestHeader("Authorization") String token,@PathVariable String id) {
         stockService.validateToken(token);
 //        validateToken(token);
         stockService.deleteStock(id);

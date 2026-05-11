@@ -7,19 +7,22 @@ import com.svacham.Order_Service.entity.Order;
 
 import java.util.List;
 
-public interface OrderService { Order createOrder(Order order);
+public interface OrderService {
 
     AuthValidationResponseDto validateToken(String token);
 
-    Order createOrder(String token,OrderRequestDto requestDto);
+    Order createOrder(String token, OrderRequestDto requestDto);
+
+    Order createOrder(Order order);
 
     List<Order> getAllOrders();
 
-    Order getOrderById(Long id);
+    Order getOrderById(String id);
 
-    Order updateOrder(Long id, Order order);
+    Order updateOrder(String id, Order order);
 
-    void deleteOrder(Long id);
+    void deleteOrder(String id);
 
     StateOrderSummaryDto getOrderSummary();
+
 }

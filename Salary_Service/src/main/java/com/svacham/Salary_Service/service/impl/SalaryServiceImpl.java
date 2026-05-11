@@ -5,7 +5,6 @@ import com.svacham.Salary_Service.entity.Salary;
 import com.svacham.Salary_Service.repository.SalaryRepository;
 import com.svacham.Salary_Service.service.SalaryService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -18,14 +17,14 @@ public class SalaryServiceImpl implements SalaryService {
 
     private final SalaryRepository salaryRepository;
 
-
     private final WebClient.Builder webClientBuilder;
 
+    @Override
     public AuthValidationResponseDto validateToken(String token) {
-        try {
-//            System.out.println("STEP 3 : CALLING AUTH-SERVICE");
 
-            AuthValidationResponseDto response = webClientBuilder.build()
+        try {
+
+            return webClientBuilder.build()
                     .get()
                     .uri("http://AUTH-SERVICE/auth/validate")
                     .header("Authorization", token)
@@ -33,9 +32,8 @@ public class SalaryServiceImpl implements SalaryService {
                     .bodyToMono(AuthValidationResponseDto.class)
                     .block();
 
-//            System.out.println("STEP 4 : AUTH RESPONSE = " + response);
-            return response;
         } catch (Exception e) {
+
             throw new RuntimeException("AUTH-SERVICE is unavailable : " + e.getMessage());
         }
     }
@@ -44,13 +42,19 @@ public class SalaryServiceImpl implements SalaryService {
     public Salary addSalary(Salary salary) {
 
         double balance = salary.getMonthlySalary() - salary.getPaidAmount();
+
         salary.setBalanceAmount(balance);
 
-        if(balance == 0){
+        if (balance == 0) {
+
             salary.setStatus("PAID");
+
         } else if (salary.getPaidAmount() > 0) {
+
             salary.setStatus("PARTIAL");
+
         } else {
+
             salary.setStatus("PENDING");
         }
 
@@ -61,17 +65,20 @@ public class SalaryServiceImpl implements SalaryService {
 
     @Override
     public List<Salary> getAllSalaries() {
+
         return salaryRepository.findAll();
     }
 
     @Override
-    public Salary getSalaryById(Long id) {
+    public Salary getSalaryById(String id) {
+
         return salaryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Salary not found with id : " + id));
+                .orElseThrow(() ->
+                        new RuntimeException("Salary not found with id : " + id));
     }
 
     @Override
-    public Salary updateSalary(Long id, Salary salary) {
+    public Salary updateSalary(String id, Salary salary) {
 
         Salary existing = getSalaryById(id);
 
@@ -81,13 +88,19 @@ public class SalaryServiceImpl implements SalaryService {
         existing.setPaidAmount(salary.getPaidAmount());
 
         double balance = salary.getMonthlySalary() - salary.getPaidAmount();
+
         existing.setBalanceAmount(balance);
 
-        if(balance == 0){
+        if (balance == 0) {
+
             existing.setStatus("PAID");
+
         } else if (salary.getPaidAmount() > 0) {
+
             existing.setStatus("PARTIAL");
+
         } else {
+
             existing.setStatus("PENDING");
         }
 
@@ -100,12 +113,14 @@ public class SalaryServiceImpl implements SalaryService {
     }
 
     @Override
-    public void deleteSalary(Long id) {
+    public void deleteSalary(String id) {
+
         salaryRepository.deleteById(id);
     }
 
     @Override
     public List<Salary> getByStatus(String status) {
+
         return salaryRepository.findByStatus(status);
     }
 

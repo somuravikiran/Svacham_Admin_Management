@@ -1,14 +1,13 @@
 package com.svacham.Salary_Service.entity;
 
-
-import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "salary")
+@Document(collection = "salary")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -17,8 +16,7 @@ import java.time.LocalDateTime;
 public class Salary {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     private String employeeName;
 
@@ -36,7 +34,7 @@ public class Salary {
 
     private String paymentMode;
 
-    private String status;   // PAID / PARTIAL / PENDING
+    private String status;
 
     private String notes;
 

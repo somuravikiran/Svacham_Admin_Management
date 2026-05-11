@@ -10,5 +10,5 @@ import org.springframework.web.bind.annotation.RequestHeader;
 public interface ClientServiceFeign {
 
     @GetMapping("/api/clients/{id}")
-    ClientResponseDto getClientById(@RequestHeader("Authorization") String token, @PathVariable("id") Long id);
+    ClientResponseDto getClientById(@RequestHeader("Authorization") String token, @PathVariable("id") String id);
 }

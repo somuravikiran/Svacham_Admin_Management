@@ -1,25 +1,24 @@
 package com.svacham.Spending_Service.service;
 
 import com.svacham.Spending_Service.dto.AuthValidationResponseDto;
-import com.svacham.Spending_Service.dto.SpendingSummaryDto;
 import com.svacham.Spending_Service.entity.Spending;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
 public interface SpendingService {
+
     AuthValidationResponseDto validateToken(String token);
 
     Spending addSpending(Spending spending);
 
     List<Spending> getAllSpendings();
 
-    Spending getSpendingById(Long id);
+    Spending getSpendingById(String id);
 
-    Spending updateSpending(Long id, Spending spending);
+    Spending updateSpending(String id, Spending spending);
 
-    void deleteSpending(Long id);
+    void deleteSpending(String id);
 
     List<Spending> getByStatus(String status);
 

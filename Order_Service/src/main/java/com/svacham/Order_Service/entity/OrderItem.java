@@ -1,12 +1,7 @@
 package com.svacham.Order_Service.entity;
 
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import jakarta.persistence.*;
 import lombok.*;
 
-@Entity
-@Table(name = "order_items")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -14,10 +9,7 @@ import lombok.*;
 @Builder
 public class OrderItem {
 
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long itemId;
+    private String itemId;
 
     private String pickleType;
 
@@ -28,9 +20,4 @@ public class OrderItem {
     private Double unitPrice;
 
     private Double subTotal;
-
-    @ManyToOne
-    @JoinColumn(name = "order_id")
-    @JsonBackReference
-    private Order order;
 }

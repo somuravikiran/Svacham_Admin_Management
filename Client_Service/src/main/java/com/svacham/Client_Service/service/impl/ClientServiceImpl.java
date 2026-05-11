@@ -64,13 +64,15 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Client getClientById(Long id) {
+    public Client getClientById(String id) {
+
         return clientRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Client Not Found"));
     }
 
     @Override
-    public Client updateClient(Long id, Client client) {
+    public Client updateClient(String id, Client client) {
+
         Client existing = getClientById(id);
 
         existing.setClientName(client.getClientName());
@@ -88,9 +90,9 @@ public class ClientServiceImpl implements ClientService {
 
         return clientRepository.save(existing);
     }
-
     @Override
-    public void deleteClient(Long id) {
+    public void deleteClient(String id) {
+
         clientRepository.deleteById(id);
     }
 

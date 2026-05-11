@@ -46,7 +46,7 @@ class StockServiceImplTest {
 
     @Test
     void updateStock_existing_updatesComputedFieldsAndSaves() {
-        Long id = 1L;
+        String id = "1";
         Stock existing = new Stock();
         existing.setTotalStock(50.0);
         existing.setUsedStock(10.0);
@@ -83,35 +83,34 @@ class StockServiceImplTest {
 
     @Test
     void getStockById_notFound_throws() {
-        when(stockRepository.findById(99L)).thenReturn(Optional.empty());
+        when(stockRepository.findById("99")).thenReturn(Optional.empty());
 
-        RuntimeException ex = assertThrows(RuntimeException.class, () -> stockService.getStockById(99L));
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> stockService.getStockById("99"));
         assertTrue(ex.getMessage().contains("Stock Not Found"));
     }
 
     @Test
     void deleteStock_callsRepository() {
-        doNothing().when(stockRepository).deleteById(5L);
+        doNothing().when(stockRepository).deleteById("5");
 
-        stockService.deleteStock(5L);
+        stockService.deleteStock("5");
 
-        verify(stockRepository, times(1)).deleteById(5L);
+        verify(stockRepository, times(1)).deleteById("5");
     }
 
     @Test
     void getStockSummary_usesRepositoryAggregates() {
-        when(stockRepository.sumRemainingStock()).thenReturn(150.0);
-        when(stockRepository.sumUsedStock()).thenReturn(50.0);
-        when(stockRepository.sumStockValue()).thenReturn(3000.0);
-        when(stockRepository.countByStatus("LOW_STOCK")).thenReturn(3L);
-        when(stockRepository.countByStatus("OUT_OF_STOCK")).thenReturn(1L);
+        Stock s1 = new Stock(); s1.setRemainingStock(100.0); s1.setUsedStock(30.0); s1.setStockValue(2000.0); s1.setStatus("LOW_STOCK");
+        Stock s2 = new Stock(); s2.setRemainingStock(50.0); s2.setUsedStock(20.0); s2.setStockValue(1000.0); s2.setStatus("OUT_OF_STOCK");
+
+        when(stockRepository.findAll()).thenReturn(List.of(s1, s2));
 
         StockSummaryDto dto = stockService.getStockSummary();
 
         assertEquals(150.0, dto.getTotalStockAvailable());
         assertEquals(50.0, dto.getTotalUsedStock());
         assertEquals(3000.0, dto.getTotalInventoryValue());
-        assertEquals(3L, dto.getLowStockItems());
+        assertEquals(1L, dto.getLowStockItems());
         assertEquals(1L, dto.getOutOfStockItems());
     }
 

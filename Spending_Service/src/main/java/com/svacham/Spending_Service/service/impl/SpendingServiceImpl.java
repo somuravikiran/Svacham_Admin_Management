@@ -19,23 +19,18 @@ public class SpendingServiceImpl implements SpendingService {
 
     private final SpendingRepository spendingRepository;
 
-
     private final WebClient.Builder webClientBuilder;
 
+    @Override
     public AuthValidationResponseDto validateToken(String token) {
         try {
-//            System.out.println("STEP 3 : CALLING AUTH-SERVICE");
-
-            AuthValidationResponseDto response = webClientBuilder.build()
+            return webClientBuilder.build()
                     .get()
                     .uri("http://AUTH-SERVICE/auth/validate")
                     .header("Authorization", token)
                     .retrieve()
                     .bodyToMono(AuthValidationResponseDto.class)
                     .block();
-
-//            System.out.println("STEP 4 : AUTH RESPONSE = " + response);
-            return response;
         } catch (Exception e) {
             throw new RuntimeException("AUTH-SERVICE is unavailable : " + e.getMessage());
         }
@@ -53,13 +48,13 @@ public class SpendingServiceImpl implements SpendingService {
     }
 
     @Override
-    public Spending getSpendingById(Long id) {
+    public Spending getSpendingById(String id) {
         return spendingRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Spending not found with id : " + id));
     }
 
     @Override
-    public Spending updateSpending(Long id, Spending spending) {
+    public Spending updateSpending(String id, Spending spending) {
         Spending existing = getSpendingById(id);
 
         existing.setExpenseTitle(spending.getExpenseTitle());
@@ -75,7 +70,7 @@ public class SpendingServiceImpl implements SpendingService {
     }
 
     @Override
-    public void deleteSpending(Long id) {
+    public void deleteSpending(String id) {
         spendingRepository.deleteById(id);
     }
 
@@ -86,12 +81,9 @@ public class SpendingServiceImpl implements SpendingService {
 
     @Override
     public Map<String, Object> getSpendingSummary() {
-
         List<Spending> allSpendings = spendingRepository.findAll();
 
-        double totalExpense = allSpendings.stream()
-                .mapToDouble(Spending::getAmount)
-                .sum();
+        double totalExpense = allSpendings.stream().mapToDouble(Spending::getAmount).sum();
 
         double paidExpense = allSpendings.stream()
                 .filter(s -> "PAID".equalsIgnoreCase(s.getStatus()))
@@ -109,6 +101,7 @@ public class SpendingServiceImpl implements SpendingService {
                 .sum();
 
         Map<String, Object> summary = new HashMap<>();
+
         summary.put("totalExpense", totalExpense);
         summary.put("paidExpense", paidExpense);
         summary.put("pendingExpense", pendingExpense);

@@ -53,18 +53,18 @@ class SpendingServiceImplTest {
     @Test
     void getSpendingById_found_returns() {
         Spending s = new Spending(); s.setExpenseTitle("Found");
-        when(spendingRepository.findById(1L)).thenReturn(Optional.of(s));
+        when(spendingRepository.findById("1")).thenReturn(Optional.of(s));
 
-        Spending res = spendingService.getSpendingById(1L);
+        Spending res = spendingService.getSpendingById("1");
 
         assertEquals("Found", res.getExpenseTitle());
     }
 
     @Test
     void getSpendingById_notFound_throws() {
-        when(spendingRepository.findById(99L)).thenReturn(Optional.empty());
+        when(spendingRepository.findById("99")).thenReturn(Optional.empty());
 
-        RuntimeException ex = assertThrows(RuntimeException.class, () -> spendingService.getSpendingById(99L));
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> spendingService.getSpendingById("99"));
         assertTrue(ex.getMessage().contains("Spending not found"));
     }
 
@@ -79,10 +79,10 @@ class SpendingServiceImplTest {
         update.setAmount(2000.0);
         update.setStatus("PAID");
 
-        when(spendingRepository.findById(2L)).thenReturn(Optional.of(existing));
+        when(spendingRepository.findById("2")).thenReturn(Optional.of(existing));
         when(spendingRepository.save(any(Spending.class))).thenAnswer(i -> i.getArgument(0));
 
-        Spending res = spendingService.updateSpending(2L, update);
+        Spending res = spendingService.updateSpending("2", update);
 
         assertEquals("New", res.getExpenseTitle());
         assertEquals(2000.0, res.getAmount());
@@ -91,11 +91,11 @@ class SpendingServiceImplTest {
 
     @Test
     void deleteSpending_callsRepository() {
-        doNothing().when(spendingRepository).deleteById(5L);
+        doNothing().when(spendingRepository).deleteById("5");
 
-        spendingService.deleteSpending(5L);
+        spendingService.deleteSpending("5");
 
-        verify(spendingRepository, times(1)).deleteById(5L);
+        verify(spendingRepository, times(1)).deleteById("5");
     }
 
     @Test

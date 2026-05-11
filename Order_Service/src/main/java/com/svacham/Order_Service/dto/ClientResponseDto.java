@@ -7,7 +7,7 @@ import java.time.LocalDate;
 @Data
 public class ClientResponseDto {
 
-    private Long id;
+    private String id;
     private String clientName;
     private String phoneNumber;
     private String address;

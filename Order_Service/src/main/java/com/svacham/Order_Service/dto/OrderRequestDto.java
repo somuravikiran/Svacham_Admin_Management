@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 public class OrderRequestDto {
 
-    private Long clientId;
+    private String clientId;
     private String clientName;
     private LocalDate orderDate;
     private LocalDate deliveryDate;
