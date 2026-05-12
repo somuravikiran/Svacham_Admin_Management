@@ -12,77 +12,40 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    // =========================
-    // 404 - Resource Not Found
-    // =========================
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<Map<String, Object>> handleResourceNotFound(ResourceNotFoundException ex) {
-
-        ex.printStackTrace(); // 🔥 IMPORTANT FOR RENDER LOGS
-
-        return buildResponse(
-                ex.getMessage(),
-                HttpStatus.NOT_FOUND
-        );
+        return buildResponse(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
-    // =========================
-    // 409 - Duplicate Resource
-    // =========================
     @ExceptionHandler(DuplicateResourceException.class)
     public ResponseEntity<Map<String, Object>> handleDuplicateResource(DuplicateResourceException ex) {
-
-        ex.printStackTrace(); // 🔥 IMPORTANT
-
-        return buildResponse(
-                ex.getMessage(),
-                HttpStatus.CONFLICT
-        );
+        return buildResponse(ex.getMessage(), HttpStatus.CONFLICT);
     }
 
-    // =========================
-    // 401 - Invalid Credentials
-    // =========================
     @ExceptionHandler(InvalidCredentialsException.class)
     public ResponseEntity<Map<String, Object>> handleInvalidCredentials(InvalidCredentialsException ex) {
-
-        ex.printStackTrace(); // 🔥 IMPORTANT
-
-        return buildResponse(
-                ex.getMessage(),
-                HttpStatus.UNAUTHORIZED
-        );
+        return buildResponse(ex.getMessage(), HttpStatus.UNAUTHORIZED);
     }
 
-    // =========================
-    // 500 - General Exception
-    // =========================
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<Map<String, Object>> handleRuntime(RuntimeException ex) {
+        ex.printStackTrace(); // IMPORTANT for Render logs
+        return buildResponse("Runtime Error: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, Object>> handleGeneralException(Exception ex) {
-
-        // 🔥 THIS IS THE MOST IMPORTANT LINE (fixes missing logs)
-        ex.printStackTrace();
-
-        Map<String, Object> response = new HashMap<>();
-        response.put("timestamp", LocalDateTime.now());
-        response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
-        response.put("error", "Internal Server Error");
-        response.put("message", ex.getMessage());
-
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        ex.printStackTrace(); // IMPORTANT
+        return buildResponse("Server Error: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    // =========================
-    // Common Response Builder
-    // =========================
     private ResponseEntity<Map<String, Object>> buildResponse(String message, HttpStatus status) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("timestamp", LocalDateTime.now());
+        map.put("status", status.value());
+        map.put("error", status.getReasonPhrase());
+        map.put("message", message);
 
-        Map<String, Object> response = new HashMap<>();
-        response.put("timestamp", LocalDateTime.now());
-        response.put("status", status.value());
-        response.put("error", status.getReasonPhrase());
-        response.put("message", message);
-
-        return new ResponseEntity<>(response, status);
+        return new ResponseEntity<>(map, status);
     }
 }
