@@ -19,12 +19,16 @@ public class GlobalCorsConfig {
 
         config.setAllowCredentials(true);
 
-        config.setAllowedOrigins(Arrays.asList(
-                "http://localhost:5173"
+        // Allow frontend URLs
+        config.setAllowedOriginPatterns(Arrays.asList(
+                "http://localhost:5173",
+                "https://*.onrender.com"
         ));
 
+        // Allow all headers
         config.setAllowedHeaders(Arrays.asList("*"));
 
+        // Allow all methods
         config.setAllowedMethods(Arrays.asList(
                 HttpMethod.GET.name(),
                 HttpMethod.POST.name(),
@@ -32,6 +36,9 @@ public class GlobalCorsConfig {
                 HttpMethod.DELETE.name(),
                 HttpMethod.OPTIONS.name()
         ));
+
+        // Expose headers if needed
+        config.setExposedHeaders(Arrays.asList("*"));
 
         UrlBasedCorsConfigurationSource source =
                 new UrlBasedCorsConfigurationSource();
