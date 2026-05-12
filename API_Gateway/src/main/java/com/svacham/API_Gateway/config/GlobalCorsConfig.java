@@ -7,7 +7,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.reactive.CorsWebFilter;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 
-import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 public class GlobalCorsConfig {
@@ -19,17 +19,17 @@ public class GlobalCorsConfig {
 
         config.setAllowCredentials(true);
 
-        // Allow frontend URLs
-        config.setAllowedOriginPatterns(Arrays.asList(
+        // IMPORTANT: use patterns instead of *
+        config.setAllowedOriginPatterns(List.of(
                 "http://localhost:5173",
-                "https://*.onrender.com"
+                "https://svacham-frontend-dzus.onrender.com"
         ));
 
-        // Allow all headers
-        config.setAllowedHeaders(Arrays.asList("*"));
+        config.setAllowCredentials(true);
+        config.setAllowedOriginPatterns(List.of("*"));
+        config.setAllowedHeaders(List.of("*"));
 
-        // Allow all methods
-        config.setAllowedMethods(Arrays.asList(
+        config.setAllowedMethods(List.of(
                 HttpMethod.GET.name(),
                 HttpMethod.POST.name(),
                 HttpMethod.PUT.name(),
@@ -37,8 +37,7 @@ public class GlobalCorsConfig {
                 HttpMethod.OPTIONS.name()
         ));
 
-        // Expose headers if needed
-        config.setExposedHeaders(Arrays.asList("*"));
+        config.setExposedHeaders(List.of("*"));
 
         UrlBasedCorsConfigurationSource source =
                 new UrlBasedCorsConfigurationSource();
