@@ -15,34 +15,7 @@ import java.util.Map;
 public class ClientController {
 
     private final ClientService clientService;
-   // private final AuthServiceClient authServiceClient;
-//
-//    private void validateToken(String token) {
-//        var response = clientService.validateToken(token);
-//
-//        if (response == null || !response.isValid()) {
-//            throw new RuntimeException("Unauthorized Access - Invalid Token");
-//        }
-//    }
-//
-//    @PostMapping("/add")
-//    public Client addClient(@RequestHeader("Authorization") String token,
-//                            @RequestBody Client client) {
-////
-////        System.out.println("STEP 1 : REQUEST ENTERED CONTROLLER");
-////        System.out.println("STEP 2 : TOKEN = " + token);
-//
-//        validateToken(token);
-//
-//        System.out.println("STEP 3 : TOKEN VALIDATED SUCCESS");
-//
-//        Client saved = clientService.addClient(client);
-//
-//        System.out.println("STEP 4 : CLIENT SAVED");
-//
-//        return saved;
-//    }
-//
+
     @PostMapping("/add")
     public Client addClient(@RequestHeader("Authorization") String token,
                             @RequestBody Client client) {

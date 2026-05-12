@@ -29,7 +29,7 @@ public class ClientServiceImpl implements ClientService {
 
             AuthValidationResponseDto response = webClientBuilder.build()
                     .get()
-                    .uri("http://AUTH-SERVICE/auth/validate")
+                    .uri("lb://AUTH-SERVICE/auth/validate")
                     .header("Authorization", token)
                     .retrieve()
                     .bodyToMono(AuthValidationResponseDto.class)
