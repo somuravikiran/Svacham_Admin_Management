@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:9090/api/salary";
+const BASE_URL = "https://svacham-admin-management-2.onrender.com";
 
 const getToken = () => {
     return localStorage.getItem("token");
