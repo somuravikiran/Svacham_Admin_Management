@@ -8,6 +8,7 @@ export const loginUser = async (loginData) => {
         loginData
     );
 };
+
 export const registerUser = async (registerData) => {
     return await axios.post(
         `${BASE_URL}/auth/register`,
