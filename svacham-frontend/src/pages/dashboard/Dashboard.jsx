@@ -6,7 +6,7 @@ import "./Dashboard.css";
 
 const Dashboard = () => {
 
-    const BASE_URL = "http://localhost:9090";
+    const BASE_URL = "https://svacham-admin-management-2.onrender.com";
 
     const token = localStorage.getItem("token");
 
