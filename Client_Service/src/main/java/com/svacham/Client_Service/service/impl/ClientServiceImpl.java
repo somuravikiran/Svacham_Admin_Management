@@ -38,10 +38,10 @@ public class ClientServiceImpl implements ClientService {
             return response;
 
         } catch (Exception e) {
-
+            System.out.println("Auth service Failed");
             e.printStackTrace();
-
-            throw new RuntimeException("AUTH-SERVICE is unavailable : " + e.getMessage());
+            return null;
+//            throw new RuntimeException("AUTH-SERVICE is unavailable : " + e.getMessage());
         }
     }
 
