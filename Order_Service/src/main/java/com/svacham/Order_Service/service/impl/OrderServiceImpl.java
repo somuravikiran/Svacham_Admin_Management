@@ -34,7 +34,7 @@ public class OrderServiceImpl implements OrderService {
 
             return webClientBuilder.build()
                     .get()
-                    .uri("http://AUTH-SERVICE/auth/validate")
+                    .uri("https://svacham-admin-management-1.onrender.com/auth/validate")
                     .header("Authorization", token)
                     .retrieve()
                     .bodyToMono(AuthValidationResponseDto.class)
