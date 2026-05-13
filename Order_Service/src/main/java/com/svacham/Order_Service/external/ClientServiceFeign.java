@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 
-@FeignClient(name = "CLIENT-SERVICE")
+@FeignClient(name = "clients-service-j1w8.onrender.com")
 public interface ClientServiceFeign {
 
     @GetMapping("/api/clients/{id}")

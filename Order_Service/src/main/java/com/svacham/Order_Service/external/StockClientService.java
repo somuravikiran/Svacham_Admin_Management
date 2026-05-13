@@ -13,7 +13,7 @@ public class StockClientService {
     public Boolean checkStock(String itemName) {
         return webClientBuilder.build()
                 .get()
-                .uri("http://STOCK-SERVICE/api/stock/check/" + itemName)
+                .uri("https://stock-service-7kyr.onrender.com/api/stock/check/" + itemName)
                 .retrieve()
                 .bodyToMono(Boolean.class)
                 .block();
@@ -22,7 +22,7 @@ public class StockClientService {
     public String reduceStock(String itemName, Integer qty) {
         return webClientBuilder.build()
                 .put()
-                .uri("http://STOCK-SERVICE/api/stock/reduce/" + itemName + "/" + qty)
+                .uri("https://stock-service-7kyr.onrender.com/api/stock/reduce/" + itemName + "/" + qty)
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();
