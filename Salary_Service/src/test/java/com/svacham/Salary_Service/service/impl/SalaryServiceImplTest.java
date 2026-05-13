@@ -21,6 +21,9 @@ class SalaryServiceImplTest {
     @Mock
     private SalaryRepository salaryRepository;
 
+    @Mock
+    private org.springframework.web.reactive.function.client.WebClient.Builder webClientBuilder;
+
     @InjectMocks
     private com.svacham.Salary_Service.service.impl.SalaryServiceImpl salaryService;
 
@@ -54,18 +57,18 @@ class SalaryServiceImplTest {
     @Test
     void getSalaryById_found_returns() {
         Salary s = new Salary(); s.setEmployeeName("Emp");
-        when(salaryRepository.findById(1L)).thenReturn(Optional.of(s));
+        when(salaryRepository.findById("1")).thenReturn(Optional.of(s));
 
-        Salary res = salaryService.getSalaryById(1L);
+        Salary res = salaryService.getSalaryById("1");
 
         assertEquals("Emp", res.getEmployeeName());
     }
 
     @Test
     void getSalaryById_notFound_throws() {
-        when(salaryRepository.findById(99L)).thenReturn(Optional.empty());
+        when(salaryRepository.findById("99")).thenReturn(Optional.empty());
 
-        RuntimeException ex = assertThrows(RuntimeException.class, () -> salaryService.getSalaryById(99L));
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> salaryService.getSalaryById("99"));
         assertTrue(ex.getMessage().contains("Salary not found"));
     }
 
@@ -82,10 +85,10 @@ class SalaryServiceImplTest {
         update.setPaidAmount(40000.0);
         update.setSalaryMonth("2026-05");
 
-        when(salaryRepository.findById(2L)).thenReturn(Optional.of(existing));
         when(salaryRepository.save(any(Salary.class))).thenAnswer(i -> i.getArgument(0));
+        when(salaryRepository.findById("2")).thenReturn(Optional.of(existing));
 
-        Salary res = salaryService.updateSalary(2L, update);
+        Salary res = salaryService.updateSalary("2", update);
 
         assertEquals("New", res.getEmployeeName());
         assertEquals(0.0, res.getBalanceAmount());
@@ -94,11 +97,11 @@ class SalaryServiceImplTest {
 
     @Test
     void deleteSalary_callsRepository() {
-        doNothing().when(salaryRepository).deleteById(5L);
+        doNothing().when(salaryRepository).deleteById("5");
 
-        salaryService.deleteSalary(5L);
+        salaryService.deleteSalary("5");
 
-        verify(salaryRepository, times(1)).deleteById(5L);
+        verify(salaryRepository, times(1)).deleteById("5");
     }
 
     @Test
